@@ -2,6 +2,7 @@
 __pycache__/
 
 data/
+data1/
 
 *.pt
 *.ckpt

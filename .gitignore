@@ -8,3 +8,5 @@ data1/
 *.ckpt
 *.csv
 *.json
+
+./.venv

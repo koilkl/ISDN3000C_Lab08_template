@@ -1,0 +1,131 @@
+
+================================================================================
+PART 3 FINAL CHALLENGE - Phase I 
+================================================================================
+
+Step 3.1 to 3.4
+
+================================================================================
+SECTION 1: PROBLEM STATEMENT & APPROACH
+================================================================================
+
+1.1 Problem Statement
+─────────────────────
+Clearly state what problem you're solving:
+  • Dataset: Food-101 (101 food categories, ~101k images, or subset)
+  • Objective: [Classification / Detection / Segmentation]
+  • Performance Goal: [Target accuracy]
+  • Constraints: [Time, memory, etc.]
+
+Example:
+  "Build a CNN to classify food images into 101 categories with >80% accuracy
+   using efficient training on GPU with early stopping."
+
+
+1.2 Approach
+────────────────────
+Describe baseline approach (step 3.3):
+  • Model architecture: [Type and complexity]
+  • Training strategy: [Methods used]
+  • Data handling: [Augmentation, preprocessing]
+  • Evaluation: [Metrics]
+
+Example:
+  "We started with a custom CNN with 4 conv blocks (32→64→128→256 filters),
+   trained with Adam optimizer, basic augmentation, and early stopping."
+
+
+================================================================================
+SECTION 2: IMPLEMENTATION DETAILS
+================================================================================
+
+2.1 Model Architecture
+──────────────────────
+Describe the baseline model in step 3.2:
+
+a) Architecture Choice: [Custom CNN / Transfer Learning / Hybrid]
+
+   If Custom CNN:
+     • Number of layers: [N]
+     • Filter progression: [Values]
+     • Total parameters: [Number]
+     • Key components: [BN, dropout, pooling, etc.]
+
+   If Transfer Learning:
+     • Base model: [ResNet18/ResNet50/EfficientNet/etc.]
+     • Frozen layers: [Which ones]
+     • Fine-tuned layers: [Which ones]
+     • Custom head: [Architecture]
+
+   Example:
+     "Custom CNN with 4 convolutional blocks with batch normalization.
+      Progressive filter expansion: 32→64→128→256.
+      Global average pooling to reduce dimensions.
+      Two fully connected layers (512, 256) with dropout.
+      Total: 3.2M parameters."
+
+
+2.2 Data Pipeline
+─────────────────
+Describe your data handling:
+
+a) Data Augmentation:
+   • Techniques used: [List techniques]
+   • Why: [Justification]
+   • Effect on training: [Observed impact]
+
+   Example:
+     "Applied random horizontal/vertical flips, rotation (15°),
+      color jitter, and affine transformations.
+      Increased generalization and reduced overfitting by ~5%."
+
+b) Data Preprocessing:
+   • Image size: [Resolution]
+   • Normalization: [Method]
+   • Train/test split: [Ratio]
+   • Batch size: [Size]
+
+   Example:
+     "Resized all images to 224×224 (from 512×512).
+      Normalized using ImageNet statistics (mean, std).
+      Used 75/25 train/test split (75,750 / 25,250 samples).
+      Batch size: 32 (balance between speed and memory)."
+
+
+2.3 Training Configuration
+──────────────────────────
+Document your training setup:
+
+a) Hyperparameters:
+   • Learning rate: [Initial value]
+   • Optimizer: [Type and settings]
+   • Loss function: [Type]
+   • Batch size: [Size]
+   • Epochs: [Number]
+
+   Example:
+     "Adam optimizer with LR=0.001, no weight decay.
+      CrossEntropyLoss for multi-class classification.
+      Batch size: 32, max epochs: 30."
+
+b) Regularization:
+   • Dropout: [Values]
+   • Weight decay: [Value]
+   • Early stopping: [Patience]
+   • Others: [List]
+
+   Example:
+     "Dropout: 0.5 in FC layers, 0.15 in conv blocks.
+      Weight decay: 1e-4 (L2 regularization).
+      Early stopping patience: 5 epochs.
+      Gradient clipping: max_norm=1.0."
+
+c) Learning Rate Schedule:
+   • Type: [ReduceLROnPlateau / StepLR / Warmup / etc.]
+   • Parameters: [Values]
+
+   Example:
+     "Used ReduceLROnPlateau: reduce LR by 0.5x when loss plateaus.
+      Patience: 3 epochs, minimum LR: 1e-6."
+
+================================================================================

@@ -13,9 +13,9 @@ SECTION 1: PROBLEM STATEMENT & APPROACH
 ─────────────────────
 Clearly state what problem you're solving:
   • Dataset: Food-101 (101 food categories, ~101k images, or subset)
-  • Objective: [Classification / Detection / Segmentation]
-  • Performance Goal: [Target accuracy]
-  • Constraints: [Time, memory, etc.]
+  • Objective: Classification.
+  • Performance Goal: 80%
+  • Constraints: GPU performance
 
 Example:
   "Build a CNN to classify food images into 101 categories with >80% accuracy
@@ -25,10 +25,10 @@ Example:
 1.2 Approach
 ────────────────────
 Describe baseline approach (step 3.3):
-  • Model architecture: [Type and complexity]
-  • Training strategy: [Methods used]
-  • Data handling: [Augmentation, preprocessing]
-  • Evaluation: [Metrics]
+  • Model architecture: CNN, 4 blocks(3 input channels->32->64->128->256 filters)
+  • Training strategy: Adam optimizer, LR=0.001, CrossEntropyLoss
+  • Data handling: flips, rotation, color jitter
+  • Evaluation: accuracy, precision, recall, F1-score
 
 Example:
   "We started with a custom CNN with 4 conv blocks (32→64→128→256 filters),
@@ -43,13 +43,13 @@ SECTION 2: IMPLEMENTATION DETAILS
 ──────────────────────
 Describe the baseline model in step 3.2:
 
-a) Architecture Choice: [Custom CNN / Transfer Learning / Hybrid]
+a) Architecture Choice: Custom CNN 
 
    If Custom CNN:
-     • Number of layers: [N]
-     • Filter progression: [Values]
-     • Total parameters: [Number]
-     • Key components: [BN, dropout, pooling, etc.]
+     • Number of layers: 4
+     • Filter progression: 32→64→128→256
+     • Total parameters: 1464581
+     • Key components: BatchNorm, Dropout, GlobalAvgPool
 
    If Transfer Learning:
      • Base model: [ResNet18/ResNet50/EfficientNet/etc.]
@@ -70,9 +70,9 @@ a) Architecture Choice: [Custom CNN / Transfer Learning / Hybrid]
 Describe your data handling:
 
 a) Data Augmentation:
-   • Techniques used: [List techniques]
-   • Why: [Justification]
-   • Effect on training: [Observed impact]
+   • Techniques used: Flips, rotation, color jitter, affine
+   • Why: Increase diversity, reduce overfitting
+   • Effect on training: Reducing overfitting by ~5%
 
    Example:
      "Applied random horizontal/vertical flips, rotation (15°),
@@ -80,10 +80,10 @@ a) Data Augmentation:
       Increased generalization and reduced overfitting by ~5%."
 
 b) Data Preprocessing:
-   • Image size: [Resolution]
-   • Normalization: [Method]
-   • Train/test split: [Ratio]
-   • Batch size: [Size]
+   • Image size: 224×224
+   • Normalization: Normalized using ImageNet statistics (mean, std)
+   • Train/test split: 75750 / 25250
+   • Batch size: 32
 
    Example:
      "Resized all images to 224×224 (from 512×512).
@@ -97,11 +97,11 @@ b) Data Preprocessing:
 Document your training setup:
 
 a) Hyperparameters:
-   • Learning rate: [Initial value]
-   • Optimizer: [Type and settings]
-   • Loss function: [Type]
-   • Batch size: [Size]
-   • Epochs: [Number]
+   • Learning rate: 0.001
+   • Optimizer: Adam
+   • Loss function: CrossEntropyLoss
+   • Batch size: 32
+   • Epochs: 15
 
    Example:
      "Adam optimizer with LR=0.001, no weight decay.
@@ -121,8 +121,8 @@ b) Regularization:
       Gradient clipping: max_norm=1.0."
 
 c) Learning Rate Schedule:
-   • Type: [ReduceLROnPlateau / StepLR / Warmup / etc.]
-   • Parameters: [Values]
+   • Type: ReduceLROnPlateau
+   • Parameters: Patience=3, factor=0.5, min_lr=1e-6
 
    Example:
      "Used ReduceLROnPlateau: reduce LR by 0.5x when loss plateaus.
